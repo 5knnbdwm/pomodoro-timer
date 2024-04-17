@@ -1,16 +1,22 @@
-{
+/* eslint-env node */
+require('@rushstack/eslint-patch/modern-module-resolution')
+
+module.exports = {
   "env": {
     "browser": true,
     "es6": true,
     "node": true
   },
   "extends": [
-    "eslint:recommended",
+    'plugin:vue/vue3-essential',
+    'eslint:recommended',
+    '@vue/eslint-config-typescript',
+    '@vue/eslint-config-prettier/skip-formatting',
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
     "plugin:import/electron",
-    "plugin:import/typescript"
+    "plugin:import/typescript",    
   ],
   "parser": "@typescript-eslint/parser"
 }
