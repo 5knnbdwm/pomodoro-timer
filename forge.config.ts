@@ -22,9 +22,9 @@ const config: ForgeConfig = {
     //     setupArgs: ['--icon=./src/assets/icon.ico']
     //   }
     // },
-    new MakerSquirrel({
-      noMsi: true
-    }),
+    // new MakerSquirrel({
+    //   noMsi: true
+    // }),
     new MakerPortable({}),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
