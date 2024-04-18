@@ -7,6 +7,8 @@ import { VitePlugin } from '@electron-forge/plugin-vite'
 import { FusesPlugin } from '@electron-forge/plugin-fuses'
 import { FuseV1Options, FuseVersion } from '@electron/fuses'
 
+import { MakerPortable } from '@rabbitholesyndrome/electron-forge-maker-portable'
+
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true
@@ -23,6 +25,7 @@ const config: ForgeConfig = {
     new MakerSquirrel({
       noMsi: true
     }),
+    new MakerPortable({}),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
     new MakerDeb({})
