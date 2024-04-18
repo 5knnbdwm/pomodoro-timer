@@ -1,4 +1,4 @@
-name: Build Electron App for Windows
+name: Build Electron App for Windows Portable
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build-windows:
+  build-windows-portable:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,15 +23,6 @@ jobs:
 
       - name: Build the Electron app
         run: npm run make # or whatever script you use to build your app
-
-      - name: test
-        run: cd out/make; ls
-
-      # - name: Upload Artifacts
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: windows-app
-      #     path: out/make/squirrel.windows/x64/* # Adjust path according to your output directory
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4

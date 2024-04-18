@@ -38,11 +38,11 @@ const createWindow = () => {
     return Store.get(key, defaultValue)
   })
 
-  const last_version = Store.get('version', '-')
+  const last_version = Store.get('__version', '-')
   if (process.env.npm_package_version !== last_version) {
     console.log('New version detected')
     Store.clear()
-    Store.set('version', process.env.npm_package_version)
+    Store.set('__version', process.env.npm_package_version)
   }
 
   // console.log(process.env)
