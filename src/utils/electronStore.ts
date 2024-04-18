@@ -16,5 +16,10 @@ export function get<T>(key: string, defaultValue: T): T {
 }
 
 export function clear() {
-  store.clear()
+  try {
+    store.clear()
+  } catch (e) {
+    console.error(e)
+  }
+  // store.clear()
 }
