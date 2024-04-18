@@ -15,17 +15,8 @@ const config: ForgeConfig = {
   },
   rebuildConfig: {},
   makers: [
-    // {
-    //   name: '@electron-forge/maker-squirrel',
-    //   config: {
-    //     // name: 'pomodoro-timer'
-    //     setupArgs: ['--icon=./src/assets/icon.ico']
-    //   }
-    // },
-    // new MakerSquirrel({
-    //   noMsi: true
-    // }),
-    new MakerPortable({}),
+    // new MakerSquirrel({}),
+    new MakerPortable(),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
     new MakerDeb({})
