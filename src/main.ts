@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'path'
-import * as Store from './utils/electronStore'
+// import * as Store from './utils/electronStore'
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -30,22 +30,21 @@ const createWindow = () => {
   })
 
   ipcMain.handle('set-value', (_event, key, value) => {
-    Store.set(key, value)
+    // Store.set(key, value)
     return value
   })
 
   ipcMain.handle('get-value', (_event, key, defaultValue) => {
-    return Store.get(key, defaultValue)
+    // return Store.get(key, defaultValue)
+    return defaultValue
   })
 
-  const last_version = Store.get('__version', '-')
-  if (process.env.npm_package_version !== last_version) {
-    console.log('New version detected')
-    Store.clear()
-    Store.set('__version', process.env.npm_package_version)
-  }
-
-  // console.log(process.env)
+  // const last_version = Store.get('__version', '-')
+  // if (process.env.npm_package_version !== last_version) {
+  //   console.log('New version detected')
+  //   Store.clear()
+  //   Store.set('__version', process.env.npm_package_version)
+  // }
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
