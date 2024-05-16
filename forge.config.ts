@@ -14,7 +14,7 @@ const config: ForgeConfig = {
   rebuildConfig: {},
   makers: [
     new MakerSquirrel({
-      name: 'Pomodoro Timer'
+      name: 'Pomodoro-Timer'
     }),
     // new MakerPortable({}, ['win32']),
     new MakerZIP({}, ['darwin']),
