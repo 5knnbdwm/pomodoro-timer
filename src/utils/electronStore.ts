@@ -15,9 +15,9 @@ export function get<T>(key: string): T {
   return value
 }
 
-export function clear() {
-  const keys = Object.keys(store.store).filter((i) => !i.startsWith('__'))
-  for (const key of keys) {
-    store.delete(key)
-  }
-}
+// export function clear() {
+//   const keys = Object.keys(store.store).filter((i) => !i.startsWith('__'))
+//   for (const key of keys) {
+//     store.delete(key)
+//   }
+// }
