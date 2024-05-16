@@ -7,7 +7,7 @@ import { VitePlugin } from '@electron-forge/plugin-vite'
 import { FusesPlugin } from '@electron-forge/plugin-fuses'
 import { FuseV1Options, FuseVersion } from '@electron/fuses'
 
-import MakerPortable from '@rabbitholesyndrome/electron-forge-maker-portable'
+// import MakerPortable from '@rabbitholesyndrome/electron-forge-maker-portable'
 
 const config: ForgeConfig = {
   packagerConfig: {
@@ -15,8 +15,8 @@ const config: ForgeConfig = {
   },
   rebuildConfig: {},
   makers: [
-    // new MakerSquirrel({}),
-    new MakerPortable(),
+    new MakerSquirrel({}),
+    // new MakerPortable({}, ['win32']),
     new MakerZIP({}, ['darwin']),
     new MakerRpm({}),
     new MakerDeb({})

@@ -6,6 +6,5 @@ const { contextBridge, ipcRenderer } = require('electron')
 contextBridge.exposeInMainWorld('electronAPI', {
   toggleFullscreen: () => ipcRenderer.send('toggle-fullscreen'),
   setValue: (key: string, value: any) => ipcRenderer.invoke('set-value', key, value),
-  getValue: async (key: string, defaultValue: any) =>
-    ipcRenderer.invoke('get-value', key, defaultValue)
+  getValue: async (key: string) => ipcRenderer.invoke('get-value', key)
 })

@@ -32,21 +32,12 @@ declare module 'vite' {
   }
 }
 
-type Keys =
-  | 'workLength'
-  | 'workSoundTime'
-  | 'breakLength'
-  | 'breakSoundTime'
-  | 'timeDisplay'
-  | 'playSound'
-  | 'quoteEnabled'
-
 declare global {
   interface Window {
     electronAPI: {
       toggleFullscreen: () => void
-      setValue: (key: Keys, value: T) => Promise<T>
-      getValue: (key: Keys, defaultValue: T) => Promise<T>
+      setValue: (key: string, value: T) => void
+      getValue: (key: string) => Promise<T>
     }
   }
 }

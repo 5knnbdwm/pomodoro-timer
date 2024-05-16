@@ -1,64 +1,91 @@
 <template>
-  <div class="flex h-screen w-screen flex-col">
-    <div class="flex w-full grow flex-col items-center justify-center">
+  <div class="relative flex h-screen w-screen flex-col">
+    <div v-if="!initialLoading" class="flex w-full grow flex-col items-center justify-center">
+      <div class="flex basis-1/3 items-end">
+        <div
+          class="size-14 rounded-full"
+          :class="{
+            'bg-red-600': time.mode === 'break',
+            'bg-blue-600': time.mode === 'work'
+          }"
+        />
+      </div>
+      <div class="basis-1/3">
+        <Timer
+          :style="{
+            'font-size': height / 3 + 'px',
+            lineHeight: (height / 3) * 1.25 + 'px'
+          }"
+          :mode="isTimeDisplay ? 'seconds' : 'minutes'"
+          :time="time.time"
+        />
+      </div>
       <div
-        class="size-14 rounded-full"
-        :class="{
-          'bg-red-600': time.mode === 'break',
-          'bg-blue-600': time.mode === 'work'
-        }"
-      />
-      <Timer
-        :style="{
-          'font-size': height / 3 + 'px',
-          lineHeight: (height / 3) * 1.25 + 'px'
-        }"
-        :mode="isTimeDisplay ? 'seconds' : 'minutes'"
-        :time="time.time"
-      />
-      <div
-        class="px-32 text-center opacity-0 transition-opacity duration-1000 ease-in-out"
+        class="basis-1/3 px-32 text-center opacity-0 transition-opacity duration-1000 ease-in-out"
         :class="{
           'opacity-100': isQuoteShowing
+        }"
+        :style="{
+          'font-size': height / 18 + 'px',
+          lineHeight: (height / 18) * 1.25 + 'px'
         }"
       >
         {{ quotesList[quoteIndex] }}
       </div>
     </div>
-    <div
-      class="w-full basis-32 opacity-0 transition-opacity duration-300 ease-in-out hover:opacity-100"
-    >
-      <div class="flex h-full w-full flex-row items-center justify-center gap-x-3 rounded-lg p-6">
-        <button
-          class="h-fit w-fit cursor-pointer rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-500 active:bg-blue-700"
-          @click="toggleFullscreen"
-        >
-          <ArrowsPointingInIcon v-if="isFullscreen" class="h-6 w-6" />
-          <ArrowsPointingOutIcon v-else class="h-6 w-6" />
-        </button>
-        <button
-          class="h-fit w-fit cursor-pointer rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-500 active:bg-blue-700"
-          @click="toggleTimeDisplay"
-        >
-          <ClockIconSolid v-if="isTimeDisplay" class="h-6 w-6" />
-          <ClockIconOutline v-else class="h-6 w-6" />
-        </button>
-        <button
-          class="h-fit w-fit cursor-pointer rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-500 active:bg-blue-700"
-          @click="togglePlaySound"
-        >
-          <SpeakerWaveIcon v-if="isPlaySound" class="h-6 w-6" />
-          <SpeakerXMarkIcon v-else class="h-6 w-6" />
-        </button>
-        <button
-          class="h-fit w-fit cursor-pointer rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-500 active:bg-blue-700"
-          @click="toggleShowQuote"
-        >
-          <DocumentTextIcon v-if="isQuoteEnabled" class="h-6 w-6" />
-          <DocumentIcon v-else class="h-6 w-6" />
-        </button>
+    <template v-if="!initialLoading">
+      <ConfigScreen
+        class="absolute left-0 top-0 z-10 h-full w-full"
+        @close="isShowConfig = false"
+        @reset="loadConfig"
+        v-if="isShowConfig"
+        :workLength="defaultWorkLength"
+        :workSoundTime="defaultWorkSoundTime"
+        :breakLength="defaultBreakLength"
+        :breakSoundTime="defaultBreakSoundTime"
+        :quotesList="quotesList"
+      />
+      <div
+        class="absolute bottom-0 h-32 w-full opacity-0 transition-opacity duration-300 ease-in-out hover:opacity-100"
+      >
+        <div class="flex h-full w-full flex-row items-center justify-center gap-x-3 rounded-lg p-6">
+          <button
+            class="h-fit w-fit cursor-pointer rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-500 active:bg-blue-700"
+            @click="toggleFullscreen"
+          >
+            <ArrowsPointingInIcon v-if="isFullscreen" class="h-6 w-6" />
+            <ArrowsPointingOutIcon v-else class="h-6 w-6" />
+          </button>
+          <button
+            class="h-fit w-fit cursor-pointer rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-500 active:bg-blue-700"
+            @click="toggleTimeDisplay"
+          >
+            <ClockIconSolid v-if="isTimeDisplay" class="h-6 w-6" />
+            <ClockIconOutline v-else class="h-6 w-6" />
+          </button>
+          <button
+            class="h-fit w-fit cursor-pointer rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-500 active:bg-blue-700"
+            @click="togglePlaySound"
+          >
+            <SpeakerWaveIcon v-if="isPlaySound" class="h-6 w-6" />
+            <SpeakerXMarkIcon v-else class="h-6 w-6" />
+          </button>
+          <button
+            class="h-fit w-fit cursor-pointer rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-500 active:bg-blue-700"
+            @click="toggleShowQuote"
+          >
+            <DocumentTextIcon v-if="isQuoteEnabled" class="h-6 w-6" />
+            <DocumentIcon v-else class="h-6 w-6" />
+          </button>
+          <button
+            class="h-fit w-fit cursor-pointer rounded-lg bg-blue-600 p-2 text-white hover:bg-blue-500 active:bg-blue-700"
+            @click="showConfig"
+          >
+            <Cog6ToothIcon class="h-6 w-6" />
+          </button>
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -75,10 +102,12 @@ import {
   DocumentTextIcon,
   ClockIcon as ClockIconSolid
 } from '@heroicons/vue/24/solid'
-import { ClockIcon as ClockIconOutline } from '@heroicons/vue/24/outline'
+import { ClockIcon as ClockIconOutline, Cog6ToothIcon } from '@heroicons/vue/24/outline'
 
-import BeepSound from './assets/one_beep-99630.mp3'
+import BeepSound from './assets/beep.mp3'
 import Timer from './components/Timer.vue'
+import ConfigScreen from './components/ConfigurationScreen.vue'
+import { setValue, getValue } from './utils/electronStore.client'
 
 const initialLoading = ref(true)
 const defaultWorkLength = ref(60) // in seconds
@@ -108,32 +137,19 @@ const isPlaySound = ref(true)
 const { height } = useWindowSize()
 
 async function loadConfig() {
-  const workLength = await window.electronAPI.getValue('workLength', defaultWorkLength.value)
-  const workSoundTime = await window.electronAPI.getValue(
-    'workSoundTime',
-    defaultWorkSoundTime.value
-  )
-  const breakLength = await window.electronAPI.getValue('breakLength', defaultBreakLength.value)
-  const breakSoundTime = await window.electronAPI.getValue(
-    'breakSoundTime',
-    defaultBreakSoundTime.value
-  )
-  const timeDisplay = await window.electronAPI.getValue('timeDisplay', isTimeDisplay.value)
-  const playSound = await window.electronAPI.getValue('playSound', isPlaySound.value)
-  const quoteEnabled = await window.electronAPI.getValue('quoteEnabled', isQuoteEnabled.value)
-
-  time.value.time = workLength
-  defaultWorkLength.value = workLength
-  defaultWorkSoundTime.value = workSoundTime
-  defaultBreakLength.value = breakLength
-  defaultBreakSoundTime.value = breakSoundTime
-  isTimeDisplay.value = timeDisplay
-  isPlaySound.value = playSound
-  isQuoteEnabled.value = quoteEnabled
+  time.value.time = (await getValue('workLength')) ?? defaultWorkLength.value
+  time.value.mode = 'work'
+  defaultWorkLength.value = (await getValue('workLength')) ?? defaultWorkLength.value
+  defaultWorkSoundTime.value = (await getValue('workSoundTime')) ?? defaultWorkSoundTime.value
+  defaultBreakLength.value = (await getValue('breakLength')) ?? defaultBreakLength.value
+  defaultBreakSoundTime.value = (await getValue('breakSoundTime')) ?? defaultBreakSoundTime.value
+  isTimeDisplay.value = (await getValue('timeDisplay')) ?? isTimeDisplay.value
+  isPlaySound.value = (await getValue('playSound')) ?? isPlaySound.value
+  isQuoteEnabled.value = (await getValue('quoteEnabled')) ?? isQuoteEnabled.value
+  quotesList.value = (await getValue('quotesList')) ?? quotesList.value
 
   initialLoading.value = false
 }
-loadConfig()
 
 const time = ref<{
   mode: 'work' | 'break'
@@ -169,7 +185,7 @@ useIntervalFn(() => {
 
 function toggleTimeDisplay() {
   isTimeDisplay.value = !isTimeDisplay.value
-  window.electronAPI.setValue('timeDisplay', isTimeDisplay.value)
+  setValue('timeDisplay', isTimeDisplay.value)
 }
 
 function toggleFullscreen() {
@@ -183,20 +199,19 @@ function toggleFullscreen() {
 
 function togglePlaySound() {
   isPlaySound.value = !isPlaySound.value
-  window.electronAPI.setValue('playSound', isPlaySound.value)
+  setValue('playSound', isPlaySound.value)
 }
-
 const { play } = useSound(BeepSound, {
   volume: 10
 })
 function playBeepSound(double: boolean = false) {
   if (!isPlaySound.value) return
   play()
+
   if (double) {
-    // wait 1000ms
     setTimeout(() => {
       play()
-    }, 600)
+    }, 700)
   }
 }
 
@@ -212,8 +227,14 @@ const isQuoteShowing = computed(() => {
 })
 function toggleShowQuote() {
   isQuoteEnabled.value = !isQuoteEnabled.value
-  window.electronAPI.setValue('quoteEnabled', isQuoteEnabled.value)
+  setValue('quoteEnabled', isQuoteEnabled.value)
 }
 
-console.log('👋 This message is being logged by "App.vue", included via Vite')
+const isShowConfig = ref(false)
+function showConfig() {
+  isShowConfig.value = true
+}
+
+// console.log('👋 This message is being logged by "App.vue", included via Vite')
+loadConfig()
 </script>

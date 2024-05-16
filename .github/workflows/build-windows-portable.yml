@@ -12,20 +12,20 @@ jobs:
   build-windows-portable:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20' # Specify the Node.js version you need
+      # - uses: actions/checkout@v4
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20' # Specify the Node.js version you need
 
-      - name: Install dependencies
-        run: npm install
+      # - name: Install dependencies
+      #   run: npm install
 
-      - name: Build the Electron app
-        run: npm run make # or whatever script you use to build your app
+      # - name: Build the Electron app
+      #   run: npm run make # or whatever script you use to build your app
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-app
-          path: out/make/*.exe
+      # - name: Upload Artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: windows-app
+      #     path: out/make/*.exe

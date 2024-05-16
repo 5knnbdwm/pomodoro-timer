@@ -6,12 +6,12 @@ export function set<T>(key: string, value: T) {
   store.set(key, value)
 }
 
-export function get<T>(key: string, defaultValue: T): T {
+export function get<T>(key: string): T {
   const value = store.get(key) as T
-  if (value === undefined) {
-    store.set(key, defaultValue)
-    return defaultValue
-  }
+  // if (value === undefined) {
+  //   store.set(key, defaultValue)
+  //   return defaultValue
+  // }
   return value
 }
 
