@@ -38,26 +38,23 @@ jobs:
           name: Pomodoro-Timer
           path: out/make/squirrel.windows/x64/*.exe # Adjust path according to your output directory
 
-      - name: list directory contents
-        run: dir out\make\squirrel.windows\x64
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
+          draft: false
+          prerelease: false
 
-      # - name: Create GitHub Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-      #   with:
-      #     tag_name: v${{ github.run_number }}
-      #     release_name: Release v${{ github.run_number }}
-      #     draft: false
-      #     prerelease: false
-
-      # - name: Upload Release Asset
-      #   uses: actions/upload-release-asset@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-      #   with:
-      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-      #     asset_path: out/make/squirrel.windows/x64/Pomodoro%20Timer-${{ env.VERSION }}%20Setup.exe
-      #     asset_name: Pomodoro Timer-${{ env.VERSION }} Setup.exe
-      #     asset_content_type: application/octet-stream
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: out/make/squirrel.windows/x64
+          asset_name: Pomodoro Timer-${{ env.VERSION }} Setup.exe
+          asset_content_type: application/octet-stream
