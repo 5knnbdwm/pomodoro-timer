@@ -58,6 +58,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: out/make/squirrel.windows/x64
+          asset_path: out/make/squirrel.windows/x64/
           asset_name: Pomodoro Timer-*.*.* Setup.exe
           asset_content_type: application/octet-stream
