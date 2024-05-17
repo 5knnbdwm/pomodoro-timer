@@ -1,6 +1,6 @@
 {
   "name": "pomodoro-timer",
-  "productName": "Pomodoro Timer",
+  "productName": "Pomodoro-Timer",
   "version": "1.0.0",
   "description": "A Pomodoro Timer",
   "main": ".vite/build/main.js",
