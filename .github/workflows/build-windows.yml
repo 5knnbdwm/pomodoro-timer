@@ -22,39 +22,42 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build the Electron app
-        run: npm run make # or whatever script you use to build your app
+      # - name: Build the Electron app
+      #   run: npm run make # or whatever script you use to build your app
 
       - name: Extract version number
         id: extract_version
         run: echo "VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_ENV
 
-      - name: List directory contents
-        run: dir out\make\squirrel.windows\x64
+      - name: Echo version number
+        run: echo ${{ env.VERSION }}
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: Pomodoro-Timer
-          path: out/make/squirrel.windows/x64/*.exe # Adjust path according to your output directory
+      # - name: List directory contents
+      #   run: dir out\make\squirrel.windows\x64
 
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-        with:
-          tag_name: v${{ github.run_number }}
-          release_name: Release v${{ github.run_number }}
-          draft: false
-          prerelease: false
+      # - name: Upload Artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: Pomodoro-Timer
+      #     path: out/make/squirrel.windows/x64/*.exe # Adjust path according to your output directory
 
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: out/make/squirrel.windows/x64
-          asset_name: Pomodoro Timer-${{ env.VERSION }} Setup.exe
-          asset_content_type: application/octet-stream
+      # - name: Create GitHub Release
+      #   id: create_release
+      #   uses: actions/create-release@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+      #   with:
+      #     tag_name: v${{ github.run_number }}
+      #     release_name: Release v${{ github.run_number }}
+      #     draft: false
+      #     prerelease: false
+
+      # - name: Upload Release Asset
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: out/make/squirrel.windows/x64
+      #     asset_name: Pomodoro Timer-${{ env.VERSION }} Setup.exe
+      #     asset_content_type: application/octet-stream
