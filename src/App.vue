@@ -85,6 +85,17 @@
           </button>
         </div>
       </div>
+      <div class="absolute top-0 w-full p-10 text-end">
+        <p
+          class="text-gray-600"
+          :style="{
+            'font-size': height / 15 + 'px',
+            lineHeight: (height / 15) * 1.25 + 'px'
+          }"
+        >
+          {{ currentTime.toLocaleTimeString() }}
+        </p>
+      </div>
     </template>
   </div>
 </template>
@@ -129,6 +140,7 @@ const quotesList = ref([
   'The only limit to our realization of tomorrow will be our doubts of today.'
 ])
 const quoteIndex = ref(Math.floor(Math.random() * quotesList.value.length))
+const currentTime = ref(new Date())
 
 const isTimeDisplay = ref(true)
 const isFullscreen = ref(false)
@@ -160,6 +172,8 @@ const time = ref<{
 })
 
 useIntervalFn(() => {
+  currentTime.value = new Date()
+
   time.value.time--
 
   if (time.value.mode === 'work') {
