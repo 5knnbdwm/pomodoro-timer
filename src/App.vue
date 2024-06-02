@@ -13,9 +13,10 @@
       <div class="basis-1/3">
         <Timer
           :style="{
-            'font-size': height / 3 + 'px',
-            lineHeight: (height / 3) * 1.25 + 'px'
+            'font-size': height / 2 + 'px',
+            lineHeight: (height / 2) * 1.25 + 'px'
           }"
+          class="font-bold"
           :mode="isTimeDisplay ? 'seconds' : 'minutes'"
           :time="time.time"
         />
