@@ -3,7 +3,7 @@
     <div v-if="!initialLoading" class="flex w-full grow flex-col items-center justify-center">
       <div class="flex basis-1/3 items-end">
         <div
-          class="size-14 rounded-full"
+          class="h-14 w-32 rounded-full"
           :class="{
             'bg-red-600': time.mode === 'break',
             'bg-blue-600': time.mode === 'work'
