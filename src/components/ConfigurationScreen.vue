@@ -39,6 +39,25 @@
           <p class="mt-2 text-sm text-gray-500" id="workLength-description">In Sekunden</p>
         </div>
         <div class="w-full">
+          <label for="breakLength" class="block text-sm font-medium leading-6 text-gray-900">
+            Pausen Dauer
+          </label>
+          <div class="mt-2">
+            <input
+              v-model="breakLength"
+              type="text"
+              name="breakLength"
+              id="breakLength"
+              min="0"
+              class="block w-full rounded-md border-0 p-1 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="20"
+            />
+          </div>
+          <p class="mt-2 text-sm text-gray-500" id="breakLength-description">In Sekunden</p>
+        </div>
+      </div>
+      <div class="flex flex-row gap-x-5">
+        <div class="w-full">
           <label for="workLength" class="block text-sm font-medium leading-6 text-gray-900">
             Aktions Warn Ton
           </label>
@@ -57,26 +76,6 @@
             Wie lange vor Ende der Phase. In Sekunden. 0 um zu deaktivieren.
           </p>
         </div>
-      </div>
-      <div class="flex flex-row gap-x-5">
-        <div class="w-full">
-          <label for="breakLength" class="block text-sm font-medium leading-6 text-gray-900">
-            Pausen Dauer
-          </label>
-          <div class="mt-2">
-            <input
-              v-model="breakLength"
-              type="text"
-              name="breakLength"
-              id="breakLength"
-              min="0"
-              class="block w-full rounded-md border-0 p-1 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-              placeholder="20"
-            />
-          </div>
-          <p class="mt-2 text-sm text-gray-500" id="breakLength-description">In Sekunden</p>
-        </div>
-
         <div class="w-full">
           <label for="breakLength" class="block text-sm font-medium leading-6 text-gray-900">
             Pausen Warn Ton
@@ -94,6 +93,47 @@
           </div>
           <p class="mt-2 text-sm text-gray-500" id="breakLength-description">
             Wie lange vor Ende der Phase. In Sekunden. 0 um zu deaktivieren.
+          </p>
+        </div>
+      </div>
+      <div class="flex flex-row gap-x-5">
+        <div class="w-full">
+          <label for="workLength" class="block text-sm font-medium leading-6 text-gray-900">
+            Aktions Titel Dauer
+          </label>
+          <div class="mt-2">
+            <input
+              v-model="workTitleTime"
+              type="text"
+              name="workLength"
+              id="workLength"
+              min="0"
+              class="block w-full rounded-md border-0 p-1 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="2"
+            />
+          </div>
+          <p class="mt-2 text-sm text-gray-500" id="workLength-description">
+            Für wie lange soll der 'Go!' Titel angezeigt werden. In Sekunden. 0 um zu deaktivieren.
+          </p>
+        </div>
+        <div class="w-full">
+          <label for="breakLength" class="block text-sm font-medium leading-6 text-gray-900">
+            Pausen Titel Dauer
+          </label>
+          <div class="mt-2">
+            <input
+              v-model="breakTitleTime"
+              type="text"
+              name="breakLength"
+              id="breakLength"
+              min="0"
+              class="block w-full rounded-md border-0 p-1 pl-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              placeholder="2"
+            />
+          </div>
+          <p class="mt-2 text-sm text-gray-500" id="breakLength-description">
+            Für wie lange soll der 'Pause' Titel angezeigt werden. In Sekunden. 0 um zu
+            deaktivieren.
           </p>
         </div>
       </div>
@@ -135,23 +175,29 @@ const emits = defineEmits(['close', 'reset'])
 const props = defineProps<{
   workLength: number
   workSoundTime: number
+  workTitleTime: number
   breakLength: number
   breakSoundTime: number
+  breakTitleTime: number
   quotesList: string[]
 }>()
 
 const workLength = ref(props.workLength.toString())
 const workSoundTime = ref(props.workSoundTime.toString())
+const workTitleTime = ref(props.workTitleTime.toString())
 const breakLength = ref(props.breakLength.toString())
 const breakSoundTime = ref(props.breakSoundTime.toString())
+const breakTitleTime = ref(props.breakTitleTime.toString())
 const quotesList = ref(props.quotesList.join('\n'))
 
 const edited = computed(() => {
   return (
     workLength.value !== props.workLength.toString() ||
     workSoundTime.value !== props.workSoundTime.toString() ||
+    workTitleTime.value !== props.workTitleTime.toString() ||
     breakLength.value !== props.breakLength.toString() ||
     breakSoundTime.value !== props.breakSoundTime.toString() ||
+    breakTitleTime.value !== props.breakTitleTime.toString() ||
     quotesList.value !== props.quotesList.join('\n')
   )
 })
@@ -161,10 +207,14 @@ function save() {
   setValue('workLength', Number(workLength.value))
   if (workSoundTime.value === '') workSoundTime.value = '0'
   setValue('workSoundTime', Number(workSoundTime.value))
+  if (workTitleTime.value === '') workTitleTime.value = '2'
+  setValue('workTitleTime', Number(workTitleTime.value))
   if (breakLength.value === '') breakLength.value = '20'
   setValue('breakLength', Number(breakLength.value))
   if (breakSoundTime.value === '') breakSoundTime.value = '0'
   setValue('breakSoundTime', Number(breakSoundTime.value))
+  if (breakTitleTime.value === '') breakTitleTime.value = '2'
+  setValue('breakTitleTime', Number(breakTitleTime.value))
   setValue('quotesList', quotesList.value.trim().split('\n'))
 }
 

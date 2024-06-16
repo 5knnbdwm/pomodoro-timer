@@ -1,8 +1,10 @@
 const keys = [
   'workLength',
   'workSoundTime',
+  'workTitleTime',
   'breakLength',
   'breakSoundTime',
+  'breakTitleTime',
   'timeDisplay',
   'playSound',
   'quoteEnabled',

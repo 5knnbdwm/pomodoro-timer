@@ -11,7 +11,20 @@
         />
       </div>
       <div class="basis-1/3">
+        <template v-if="isShowTitle">
+          <p
+            :style="{
+              'font-size': height / 2 + 'px',
+              lineHeight: (height / 2) * 1.25 + 'px'
+            }"
+            class="font-bold"
+          >
+            <template v-if="time.mode === 'work'">Go!</template>
+            <template v-else>Pause</template>
+          </p>
+        </template>
         <Timer
+          v-else
           :style="{
             'font-size': height / 2 + 'px',
             lineHeight: (height / 2) * 1.25 + 'px'
@@ -42,8 +55,10 @@
         v-if="isShowConfig"
         :workLength="defaultWorkLength"
         :workSoundTime="defaultWorkSoundTime"
+        :workTitleTime="defaultWorkTitleTime"
         :breakLength="defaultBreakLength"
         :breakSoundTime="defaultBreakSoundTime"
+        :breakTitleTime="defaultBreakTitleTime"
         :quotesList="quotesList"
       />
       <div
@@ -124,8 +139,10 @@ import { setValue, getValue } from './utils/electronStore.client'
 const initialLoading = ref(true)
 const defaultWorkLength = ref(60) // in seconds
 const defaultWorkSoundTime = ref(5) // in seconds (0 to disable)
+const defaultWorkTitleTime = ref(2) // in seconds (0 to disable)
 const defaultBreakLength = ref(20) // in seconds
 const defaultBreakSoundTime = ref(1) // in seconds (0 to disable)
+const defaultBreakTitleTime = ref(2) // in seconds (0 to disable)
 
 const isQuoteEnabled = ref(true)
 const quotesList = ref([
@@ -154,8 +171,10 @@ async function loadConfig() {
   time.value.mode = 'work'
   defaultWorkLength.value = (await getValue('workLength')) ?? defaultWorkLength.value
   defaultWorkSoundTime.value = (await getValue('workSoundTime')) ?? defaultWorkSoundTime.value
+  defaultWorkTitleTime.value = (await getValue('workTitleTime')) ?? defaultWorkTitleTime.value
   defaultBreakLength.value = (await getValue('breakLength')) ?? defaultBreakLength.value
   defaultBreakSoundTime.value = (await getValue('breakSoundTime')) ?? defaultBreakSoundTime.value
+  defaultBreakTitleTime.value = (await getValue('breakTitleTime')) ?? defaultBreakTitleTime.value
   isTimeDisplay.value = (await getValue('timeDisplay')) ?? isTimeDisplay.value
   isPlaySound.value = (await getValue('playSound')) ?? isPlaySound.value
   isQuoteEnabled.value = (await getValue('quoteEnabled')) ?? isQuoteEnabled.value
@@ -250,6 +269,15 @@ function showConfig() {
   isShowConfig.value = true
 }
 
-// console.log('👋 This message is being logged by "App.vue", included via Vite')
+const isShowTitle = computed(() => {
+  if (time.value.mode === 'work') {
+    if (defaultWorkLength.value - time.value.time < defaultWorkTitleTime.value) return true
+  } else if (time.value.mode === 'break') {
+    if (defaultBreakLength.value - time.value.time < defaultBreakTitleTime.value) return true
+  }
+
+  return false
+})
+
 loadConfig()
 </script>
