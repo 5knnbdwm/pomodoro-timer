@@ -8,7 +8,10 @@ const keys = [
   'timeDisplay',
   'playSound',
   'quoteEnabled',
-  'quotesList'
+  'quotesList',
+  'darkMode',
+  'darkModeAutoSwitch',
+  'darkModeStartTime'
 ] as const
 type Keys = (typeof keys)[number]
 
